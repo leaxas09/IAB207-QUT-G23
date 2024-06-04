@@ -6,10 +6,10 @@ import os
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 
-destbp = Blueprint('destination', __name__, url_prefix='/destinations')
+destbp = Blueprint('event', __name__, url_prefix='/events')
 
-def add_comment(destination, form):
-    comment = Comment(text=form.text.data, destination=destination, user=current_user, created_at=datetime.now())
+def add_comment(event, form):
+    comment = Comment(text=form.text.data,event=event, user=current_user, created_at=datetime.now())
     db.session.add(comment)
     db.session.commit()
     flash('Your comment has been added', 'success')
