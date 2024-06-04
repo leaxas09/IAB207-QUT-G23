@@ -1,20 +1,20 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from .models import Destination
+
+from .froms import EventForm
 from . import db
+# Import your models and other necessary dependencies
+from .models import Event, Comment
 
 mainbp = Blueprint('main', __name__)
 
 @mainbp.route('/')
 def index():
-    destinations = db.session.scalars(db.select(Destination)).all()    
-    return render_template('index.html', destinations=destinations)
+    events = Event.query.all()  # Replace with your actual query
+    return render_template('index.html', events=events)
 
-@mainbp.route('/search')
-def search():
-    if request.args['search'] and request.args['search'] != "":
-        print(request.args['search'])
-        query = "%" + request.args['search'] + "%"
-        destinations = db.session.scalars(db.select(Destination)).where(Destination.description.like(query))
-        return render_template('index.html', destinations=destinations)
-    else:
-        return redirect(url_for('main.index'))
+@main_bp.route('/event_detail', defaults={'event_id': None})
+@main_bp.route('/event_detail/<int:event_id>')
+def event_detail(event_id):
+    if event_id is not None:
+        # Fetch the event data using the event_id
+        event = Event.query.get(event_id)
