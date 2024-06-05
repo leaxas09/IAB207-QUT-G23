@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Event Details</h1>
+    <div class="card">
+        <img src="{{ url_for('static', filename='images/' ~ event.image) }}" class="card-img-top" alt="Event Image">
+        <div class="card-body">
+            <h5 class="card-title">{{ event.location }}</h5>
+            <p class="card-text"><strong>Date:</strong> {{ event.date }}</p>
+            <p class="card-text"><strong>Time:</strong> {{ event.time }}</p>
+            <p class="card-text"><strong>Ticket Price:</strong> ${{ event.ticket_price }}</p>
+            <p class="card-text"><strong>Tickets Available:</strong> {{ event.ticket_amount }}</p>
+            <p class="card-text"><strong>Description:</strong> {{ event.description }}</p>
+            {% if current_user.is_authenticated %}
+                <form method="POST" action="{{ url_for('event_blueprint.checkout', event_id=event.id) }}">
+                    <div class="mb-3">
+                        <label for="ticket_quantity" class="form-label">Ticket Quantity</label>
+                        <input type="number" class="form-control" id="ticket_quantity" name="ticket_quantity" min="1" max="{{ event.ticket_amount }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+                </form>
+            {% else %}
+                <p>Please <a href="{{ url_for('auth.login') }}">log in</a> to purchase tickets.</p>
+            {% endif %}
+        </div>
+    </div>
+    <a href="{{ url_for('main_blueprint.index') }}" class="btn btn-primary mt-3">Back to Events</div>
+</div>
+{% endblock %}
