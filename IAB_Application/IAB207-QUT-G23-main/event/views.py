@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from event.models import Event
 from event import db
 from .forms import LoginForm, RegisterForm
-from .models import User
+from .models import User, Purchase
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
