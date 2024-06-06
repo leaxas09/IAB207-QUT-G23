@@ -128,7 +128,7 @@ def details(event_id):
 
 @event_blueprint.route('/checkout/<int:event_id>', methods=['POST'])
 @login_required
-def checkout(event_id):
+def checkout(event_id): #checkout page
     event = Event.query.get_or_404(event_id)
     ticket_quantity = int(request.form.get('ticket_quantity'))
     ticket_total = ticket_quantity * event.ticket_price
@@ -139,20 +139,19 @@ def checkout(event_id):
 
 @event_blueprint.route('/confirm_purchase/<int:event_id>', methods=['POST'])
 @login_required
-def confirm_purchase(event_id):
+def confirm_purchase(event_id): #process purchase of tickets
     event = Event.query.get_or_404(event_id)
     ticket_quantity = int(request.form.get('ticket_quantity'))
     if ticket_quantity > event.ticket_amount:
         flash('Not enough tickets available.', 'error')
         return redirect(url_for('event_blueprint.details', event_id=event_id))
 
-    ticket_result = event.ticket_amount - ticket_quantity  # Decrease the available tickets
-    #need to update event table ticket_amount = ticket_result where event_id=eventid 
+    event.ticket_amount = event.ticket_amount - ticket_quantity  # Decrease the available tickets
 
-    for _ in range(ticket_quantity):
+    for _ in range(ticket_quantity): #create new entries for each ticket purchased 
         purchase_ticket = Purchase(user_id=current_user.id, event_id=event.id)
         db.session.add(purchase_ticket)
-
+    db.session.add(event)
     db.session.commit()
 
     flash('Purchase confirmed!', 'success')
