@@ -35,10 +35,12 @@
             <button type="submit" class="btn btn-primary">Post</button>
         </form>
         {% for comments in commentsArr %}
-        <div class="col-md-12">  
-            <b>{{ comments.user_name }} <span class="ml-2 text-muted">{{comments.created_at}}</span></b>
-            <p>{{ comments.text }}</p>  
-        </div> 
+        <div style="padding:5px 0 5px">
+            <div class="col-md-12 card bg-light" style="padding:0 5px 0">   
+                <b>{{ comments.user_name }} <span class="ml-2 text-muted">{{comments.created_at}}</span></b>
+                <p>{{ comments.text }}</p>  
+            </div> 
+        </div>
         {% endfor %} 
     </div>
 </div>
