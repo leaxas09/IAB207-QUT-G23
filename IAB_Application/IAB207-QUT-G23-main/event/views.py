@@ -133,7 +133,7 @@ def details(event_id):
         }
         commentsArr.insert(0, comment_feilds)
     print(commentsArr)
-    return render_template('event_details.html', event=event)
+    return render_template('checkout.html', event=event, ticket_quantity=ticket_quantity, ticket_total=ticket_total)
 
 # Ensure other routes also use event_blueprint for url_for
 
