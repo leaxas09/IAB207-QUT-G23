@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from event.models import Event
 from event import db
 from .forms import LoginForm, RegisterForm
-from .models import User, Purchase
+from .models import User, Purchase, Comment
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
@@ -130,11 +130,18 @@ def details(event_id):
 @login_required
 def checkout(event_id): #checkout page
     event = Event.query.get_or_404(event_id)
-    ticket_quantity = int(request.form.get('ticket_quantity'))
-    ticket_total = ticket_quantity * event.ticket_price
-    if ticket_quantity > event.ticket_amount:
-        flash('Not enough tickets available.', 'error')
-        return redirect(url_for('event_blueprint.details', event_id=event_id))
+
+    comments = db.session.query(Comment, User).join(User, Comment.user_id == User.id).filter(Comment.event_id == event_id).all()
+    commentsArr = []
+    for comment, user in comments:
+        comment_feilds = {
+            'text': comment.text,
+            'created_at': comment.created_at,
+            'user_name': user.name,
+            'user_id': user.id
+        }
+        commentsArr.insert(0, comment_feilds)
+    print(commentsArr)
     return render_template('checkout.html', event=event, ticket_quantity=ticket_quantity, ticket_total=ticket_total)
 
 @event_blueprint.route('/confirm_purchase/<int:event_id>', methods=['POST'])
@@ -156,4 +163,17 @@ def confirm_purchase(event_id): #process purchase of tickets
 
     flash('Purchase confirmed!', 'success')
     return redirect(url_for('event_blueprint.details', event_id=event_id))
+
+@event_blueprint.route('/<int:event_id>/comment', methods=['GET', 'POST'])  
+@login_required
+def comment(event_id):
+    event = Event.query.get_or_404(event_id)
+    if request.method == 'POST':
+        text = request.form.get('text')
+        comment = Comment(text=text, user_id=current_user.id, event_id=event.id) 
+        db.session.add(comment) 
+        db.session.commit() 
+        flash('Your comment has been added', 'success')  
+    return redirect(url_for('event_blueprint.details', event_id=event_id))
+    
 from event import eventbp
