@@ -122,15 +122,6 @@ def create():
 @event_blueprint.route('/details/<int:event_id>', methods=['GET'])
 def details(event_id):
     event = Event.query.get_or_404(event_id)
-    return render_template('event_details.html', event=event)
-
-# Ensure other routes also use event_blueprint for url_for
-
-@event_blueprint.route('/checkout/<int:event_id>', methods=['POST'])
-@login_required
-def checkout(event_id): #checkout page
-    event = Event.query.get_or_404(event_id)
-
     comments = db.session.query(Comment, User).join(User, Comment.user_id == User.id).filter(Comment.event_id == event_id).all()
     commentsArr = []
     for comment, user in comments:
@@ -142,6 +133,19 @@ def checkout(event_id): #checkout page
         }
         commentsArr.insert(0, comment_feilds)
     print(commentsArr)
+    return render_template('event_details.html', event=event)
+
+# Ensure other routes also use event_blueprint for url_for
+
+@event_blueprint.route('/checkout/<int:event_id>', methods=['POST'])
+@login_required
+def checkout(event_id): #checkout page
+    event = Event.query.get_or_404(event_id)
+    ticket_quantity = int(request.form.get('ticket_quantity'))
+    ticket_total = ticket_quantity * event.ticket_price
+    if ticket_quantity > event.ticket_amount:
+        flash('Not enough tickets available.', 'error')
+        return redirect(url_for('event_blueprint.details', event_id=event_id))
     return render_template('checkout.html', event=event, ticket_quantity=ticket_quantity, ticket_total=ticket_total)
 
 @event_blueprint.route('/confirm_purchase/<int:event_id>', methods=['POST'])
