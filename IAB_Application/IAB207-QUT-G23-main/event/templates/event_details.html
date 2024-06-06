@@ -24,6 +24,22 @@
             {% endif %}
         </div>
     </div>
-    <a href="{{ url_for('main_blueprint.index') }}" class="btn btn-primary mt-3">Back to Events</div>
+        <form action="{{ url_for('main_blueprint.index') }}">
+            <button type="submit" class="btn btn-primary">Back to Events</button>
+        </form>
+
+    <div> <!-- comment section need look better-->
+        <form method="POST" action="{{ url_for('event_blueprint.comment', event_id=event.id) }}">
+            <label for="text" class="form-label">Comment Text</label>
+            <textarea class="form-control" id="text" name="text" rows="3" required></textarea>
+            <button type="submit" class="btn btn-primary">Post</button>
+        </form>
+        {% for comments in commentsArr %}
+        <div class="col-md-12">  
+            <b>{{ comments.user_name }} <span class="ml-2 text-muted">{{comments.created_at}}</span></b>
+            <p>{{ comments.text }}</p>  
+        </div> 
+        {% endfor %} 
+    </div>
 </div>
 {% endblock %}
