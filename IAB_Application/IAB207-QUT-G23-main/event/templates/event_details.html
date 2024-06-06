@@ -24,11 +24,14 @@
             {% endif %}
         </div>
     </div>
+
+    <div style="padding:20px;">
         <form action="{{ url_for('main_blueprint.index') }}">
             <button type="submit" class="btn btn-primary">Back to Events</button>
         </form>
-
-    <div> <!-- comment section need look better-->
+    </div>
+        
+    <div class="card" style="padding:20px;">
         <form method="POST" action="{{ url_for('event_blueprint.comment', event_id=event.id) }}">
             <label for="text" class="form-label">Comment Text</label>
             <textarea class="form-control" id="text" name="text" rows="3" required></textarea>
