@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Event Details</h1>
+    <div class="card">
+        <img src="{{ url_for('static', filename=event.image.replace('\\', '/')) }}" class="card-img-top" alt="{{ event.name }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ event.location }}</h5>
+            <p class="card-text"><strong>Date:</strong> {{ event.date }}</p>
+            <p class="card-text"><strong>Time:</strong> {{ event.time }}</p>
+            <p class="card-text"><strong>Ticket Price:</strong> ${{ event.ticket_price }}</p>
+            <p class="card-text"><strong>Tickets Available:</strong> {{ event.ticket_amount }}</p>
+            <p class="card-text"><strong>Description:</strong> {{ event.description }}</p>
+            {% if current_user.is_authenticated %}
+                <form method="POST" action="{{ url_for('event_blueprint.checkout', event_id=event.id) }}">
+                    <div class="mb-3">
+                        <label for="ticket_quantity" class="form-label">Ticket Quantity</label>
+                        <input type="number" class="form-control" id="ticket_quantity" name="ticket_quantity" min="1" max="{{ event.ticket_amount }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+                </form>
+            {% else %}
+                <p>Please <a href="{{ url_for('main_blueprint.login') }}">log in</a> to purchase tickets.</p>
+            {% endif %}
+        </div>
+    </div>
+
+   <div class="card" style="padding:20px;">
+        <!-- Comment form -->
+        <form method="POST" action="{{ url_for('event_blueprint.comment', event_id=event.id) }}">
+            <label for="text" class="form-label">Comment Text</label>
+            <textarea class="form-control" id="text" name="text" rows="3" required></textarea>
+            <button type="submit" class="btn btn-primary">Post</button>
+        </form>
+        <!-- Display comments -->
+        {% for comment in event.comments %}
+            <div style="padding:5px 0 5px">
+                <div class="col-md-12 card bg-light" style="padding:0 5px 0">   
+                    <b>{{ comment.user.name }} <span class="ml-2 text-muted">{{ comment.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</span></b>
+                    <p>{{ comment.text }}</p>  
+                </div> 
+            </div>
+        {% endfor %} 
+    </div>
+    <a href="{{ url_for('main_blueprint.index') }}" class="btn btn-primary mt-3">Back to Events</a>
+</div>
+{% endblock %}
+
+
+

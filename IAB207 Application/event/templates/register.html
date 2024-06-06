@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/css/styles.css">
+
+    <style>
+        .form-container {
+            width: 100%;
+            max-width: 400px; 
+        }
+        .form-control {
+            width: 100%;
+        }
+        .alert-box {
+            border: 1px solid red;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #ffe6e6; 
+        }
+        /* Adjustments for logo sizes */
+        .top-logo {
+            width: 180px; /* Double the size */
+        }
+        .bottom-logo {
+            width: 100%; /* Extend through the whole screen */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container d-flex flex-column align-items-center justify-content-center min-vh-100">
+
+        <div class="d-flex align-items-center justify-content-center mb-3">
+            <img src="static/image/musica_logo.png" alt="logo" class="top-logo"> <!-- Apply top-logo class -->
+        </div>
+
+        {% from 'bootstrap5/form.html' import render_form %}
+
+        {% block content %}
+
+        <div class="form-container text-center">
+            <div class="page-header">
+                <h4>{{ heading }}</h4>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert-box alert alert-{{ category }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+			
+
+            <div class="m-auto">
+                {{ render_form(form) }}
+            </div>
+        </div>
+
+        {% endblock %}
+
+        <footer class="text-center mt-4">
+            <a href="index.html" class="d-flex align-items-center justify-content-center mb-3">
+                <img src="static/image/musica_logo.png" alt="logo" class="bottom-logo">
+            </a>
+            <p>All Rights Reserved.</p>
+        </footer>
+
+    </div>
+
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery.min.js"></script>
+
+</body>
+
+</html>

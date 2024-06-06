@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bookings - Musica</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+{% extends 'base.html' %}
+{% block title %}
+    Your Bookings
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h1>Your Bookings</h1>
+    <div class="row">
+        {% for booking in bookings %}
+        <div class="col-md-6 mb-4">
+            <a href="{{ url_for('event_blueprint.details', event_id=booking[0]) }}" class="card-link text-decoration-none text-dark">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ booking[4] }}</h5>
+                        <p class="card-text">{{ booking[1] }}</p>
+                        <p class="card-text"><strong>Date:</strong> {{ booking[2] }}</p>
+                        <p class="card-text"><strong>Location:</strong> {{ booking[3] }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+<style>
+    .card-link:hover {
+        text-decoration: none;
+    }
+
+    .card-link .card-body {
+        color: inherit;
+    }
+</style>
+
+
+</body>
+
+</html>

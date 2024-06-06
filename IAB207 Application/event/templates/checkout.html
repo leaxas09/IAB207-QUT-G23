@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5>Checkout</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('event_blueprint.confirm_purchase', event_id=event.id)}}">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" >
+                            </div>
+                            <div class="mb-4">
+                                <label for="card-details" class="form-label">Card Details</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="card-number" placeholder="Card Number" >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" id="expiry" placeholder="Expiry" >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" id="cvc" placeholder="CVC" >
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="ticket_quantity" id="ticket_quantity" value="{{ ticket_quantity }}">
+                            <!-- Button trigger modal -->
+                            <button type="submit" class="btn btn-primary">Buy Now</button>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5>Event Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center">
+                            <img src="{{ event.image }}" alt="Event" class="img-fluid mb-3 event-image">
+                        </div>
+                        <h6>Event Name: {{ event.name }}</h6>
+                        <p>Location: {{ event.location }}</p>
+                        <p>Price per Ticket: {{ event.ticket_price }}</p>
+                        <p>Number of Tickets: {{ ticket_quantity }}</p>
+                        <p>Total Price: ${{ ticket_total }}</p>
+                        <p>Description: {{ event.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- PAyment screen (Modal) -->
+    <div class="modal fade" id="paymentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Ticket</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Success</p>
+                    <p>{{ ticket_quantity }} Tickets Bought</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
