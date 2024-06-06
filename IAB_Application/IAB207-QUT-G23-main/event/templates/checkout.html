@@ -52,7 +52,7 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-center">
-                            <img src="{{ event.image }}" alt="Event" class="img-fluid mb-3 event-image">
+                            <img src="{{ url_for('static', filename='images/' ~ event.image) }}" alt="Event" class="img-fluid mb-3 event-image">
                         </div>
                         <h6>Event Name: {{ event.name }}</h6>
                         <p>Location: {{ event.location }}</p>
