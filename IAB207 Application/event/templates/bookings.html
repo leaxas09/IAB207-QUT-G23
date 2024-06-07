@@ -22,12 +22,17 @@
         <div class="col-md-6 mb-4">
             <a href="{{ url_for('event_blueprint.details', event_id=booking[0]) }}" class="card-link text-decoration-none text-dark">
                 <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ booking[4] }}</h5>
-                        <p class="card-text">{{ booking[1] }}</p>
-                        <p class="card-text"><strong>Date:</strong> {{ booking[2] }}</p>
-                        <p class="card-text"><strong>Location:</strong> {{ booking[3] }}</p>
-                    </div>
+                    <div class="row">
+                        <div class="card-body col-8">
+                            <h5 class="card-title">{{ booking[4] }} ID: {{booking[6]}}</h5>
+                            <p class="card-text">{{ booking[1] }}</p>
+                            <p class="card-text"><strong>Date:</strong> {{ booking[2] }}</p>
+                            <p class="card-text"><strong>Location:</strong> {{ booking[3] }}</p>
+                        </div>
+                        <div class="col-4">
+                            <img src="{{ url_for('static', filename=booking[7].replace('\\', '/')) }}" class="card-img-top" alt="{{ booking[4] }}">
+                        </div>
+                    </div
                 </div>
             </a>
         </div>
