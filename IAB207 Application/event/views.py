@@ -135,6 +135,7 @@ def create():
             date=date_obj,
             ticket_price=ticket_price,
             ticket_amount=ticket_amount,
+            genre=genre,
             description=description,
             image=relative_image_path  # Store the relative path
         )
