@@ -1,28 +1,34 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
+    <!-- Container for checkout form and event details -->
     <div class="container">
         <div class="row">
+            <!-- Checkout form -->
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h5>Checkout</h5>
                     </div>
                     <div class="card-body">
+                        <!-- Form for checkout -->
                         <form method="POST" action="{{ url_for('event_blueprint.confirm_purchase', event_id=event.id)}}">
+                            <!-- Name field -->
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" >
                             </div>
+                            <!-- Email field -->
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" >
                             </div>
+                            <!-- Phone field -->
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone</label>
                                 <input type="tel" class="form-control" id="phone" >
                             </div>
+                            <!-- Card details fields -->
                             <div class="mb-4">
                                 <label for="card-details" class="form-label">Card Details</label>
                                 <div class="row">
@@ -37,23 +43,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Hidden input for ticket quantity -->
                             <input type="hidden" name="ticket_quantity" id="ticket_quantity" value="{{ ticket_quantity }}">
-                            <!-- Button trigger modal -->
+                            <!-- Button to submit the form -->
                             <button type="submit" class="btn btn-primary">Buy Now</button>
-                            
                         </form>
                     </div>
                 </div>
             </div>
+            <!-- Event details -->
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h5>Event Details</h5>
                     </div>
                     <div class="card-body">
+                        <!-- Display event image -->
                         <div class="d-flex justify-content-center">
                             <img src="{{ url_for('static', filename=event.image.replace('\\', '/')) }}" alt="Event" class="img-fluid mb-3 event-image">
                         </div>
+                        <!-- Display event details -->
                         <h6>Event Name: {{ event.name }}</h6>
                         <p>Location: {{ event.location }}</p>
                         <p>Price per Ticket: {{ event.ticket_price }}</p>
@@ -65,5 +74,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}

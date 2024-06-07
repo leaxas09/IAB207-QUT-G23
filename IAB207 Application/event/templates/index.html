@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
 {% block title %}
+    <!-- Title of the page -->
     Musica
 {% endblock %}
 {% block content %}
 <div class="hero-section">
     <div class="container">
+        <!-- Hero section with welcome message and search form -->
         <h1>Welcome to <span class="primary-color">Musica</span></h1>
         <p>Music, Unleash the Magic!</p>
+        <!-- Search form -->
         <form id="search-form" action="/search" method="GET">
             <div class="search-area">
                 <input id="search-input" class="search-input" type="text" name="search" placeholder="Search for Event or Genres" style="width: 500px;">
                 <button id="search-btn" class="search-btn" type="submit">
+                    <!-- Search icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
                     </svg>
@@ -23,23 +27,31 @@
 
     <div class="artists-section">
         <div class="container">
+            <!-- Section for displaying upcoming events -->
             <h3 class="title">Upcoming Events</h3>
             <div class="row">
+                <!-- Loop through events -->
                 {% for event in events %}
                     <div class="item col-lg-3 col-sm-12">
+                        <!-- Event card -->
                         <div class="card">
+                            <!-- Event image -->
                             <img src="{{ url_for('static', filename=event.image.replace('\\', '/')) }}" class="card-img" alt="{{ event.name }}">
                             <div class="card-body">
+                                <!-- Event name -->
                                 <h5 class="card-title"><b>{{ event.name }}</b></h5>
                                 <p class="ms-2">
+                                    <!-- Display if tickets are sold out or available -->
                                     <span class="badge rounded-pill bg-danger">{{ 'Sold Out' if event.ticket_amount == 0 else 'Tickets Available' }}</span>
                                 </p>
                                 <div class="card-text">
+                                    <!-- Event details -->
                                     <p>Location: {{ event.location }}</p>
                                     <p>Date: {{ event.date }}</p>
                                     <p>Genre: {{ event.genre }}</p>
                                     <p>Price: ${{ event.ticket_price }}</p>
                                 </div>
+                                <!-- Button to view more details -->
                                 <a href="{{ url_for('event_blueprint.details', event_id=event.id) }}" class="btn btn-primary">More Details</a>
                             </div>
                         </div>
@@ -50,12 +62,16 @@
     </div>
 
 
+    <!-- Footer section -->
     <footer>
+        <!-- Musica logo -->
         <a href="{{ url_for('main_blueprint.index') }}" class="d-flex align-items-center mb-3">
             <img src="{{ url_for('static', filename='image/musica_logo.png') }}" alt="logo">
         </a>
+        <!-- Copyright notice -->
         <p>All Rights Reserved.</p>
     </footer>
 
+    <!-- Bootstrap JavaScript -->
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 {% endblock %}

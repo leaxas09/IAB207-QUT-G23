@@ -1,55 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Page title -->
     <title>Create Event</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <!-- Custom styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+    <!-- Extends base template -->
     {% extends "base.html" %}
-
+    <!-- Content block -->
     {% block content %}
+    <!-- Container for form -->
     <div class="container mt-5">
+        <!-- Title -->
         <h1>Create a New Event</h1>
+        <!-- Event creation form -->
         <form method="POST" enctype="multipart/form-data">
-		            <div class="mb-3">
+            <!-- Event name field -->
+            <div class="mb-3">
                 <label for="location" class="form-label">Event Name</label>
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
+            <!-- Event location field -->
             <div class="mb-3">
                 <label for="location" class="form-label">Event Location</label>
                 <input type="text" class="form-control" id="location" name="location" required>
             </div>
+            <!-- Event time field -->
             <div class="mb-3">
                 <label for="time" class="form-label">Event Time</label>
                 <input type="time" class="form-control" id="time" name="time" required>
             </div>
+            <!-- Event date field -->
             <div class="mb-3">
                 <label for="date" class="form-label">Event Date</label>
                 <input type="date" class="form-control" id="date" name="date" required>
             </div>
+            <!-- Event ticket price field -->
             <div class="mb-3">
                 <label for="ticket_price" class="form-label">Event Ticket Price</label>
                 <input type="number" step= 0.01 min= 0.00 class="form-control" id="ticket_price" name="ticket_price" required>
             </div>
+            <!-- Event ticket amount field -->
             <div class="mb-3">
                 <label for="ticket_amount" class="form-label">Event Ticket Amount</label>
                 <input type="number" class="form-control" id="ticket_amount" name="ticket_amount" required>
             </div>
-			<div class="mb-3">
+            <!-- Event genre field -->
+            <div class="mb-3">
                 <label for="genre" class="form-label">Main Genre</label>
                 <input type="text" class="form-control" id="genre" name="genre" required>
             </div>
+            <!-- Event description field -->
             <div class="mb-3">
                 <label for="description" class="form-label">Event Description</label>
                 <textarea class="form-control" id="description" name="description" rows="3"></textarea>
             </div>
+            <!-- Event image upload field -->
             <div class="mb-3">
                 <label for="image" class="form-label">Event Image</label>
                 <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
             </div>
+            <!-- Submit button -->
             <button type="submit" class="btn btn-primary">Create Event</button>
         </form>
     </div>

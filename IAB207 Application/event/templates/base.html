@@ -6,32 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Musica</title>
 
+    <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <!-- Link to custom styles CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
 
+    <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark border-bottom border-body" data-bs-theme="dark">
         <div class="container">
+            <!-- Brand logo linking to the home page -->
             <a class="navbar-brand" href="{{ url_for('main_blueprint.index') }}">
                 <img src="{{ url_for('static', filename='image/musica_logo.png') }}" alt="musica_logo">
             </a>
+            <!-- Toggler for collapsing the navbar on smaller screens -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <!-- Navbar links -->
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex flex-nowrap">
+                    <!-- Home link -->
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ url_for('main_blueprint.index') }}">Home</a>
                     </li>
+                    <!-- Create Event link -->
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{{ url_for('event_blueprint.create') }}">Create Event</a>
                     </li>
+                    <!-- Bookings link -->
 					<li class="nav-item">
 						<a class="nav-link" href="{{ url_for('event_blueprint.bookings') }}">Bookings</a>
 					</li>
+                    <!-- User authentication links -->
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link disabled text-muted" href="#">Welcome {{ current_user.name }}</a>
@@ -52,7 +62,7 @@
         </div>
     </nav>
 
-    <!-- Flashes any messages to the user -->
+    <!-- Flash messages section -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <div class="container-fluid">
@@ -67,12 +77,15 @@
     {% endif %}
     {% endwith %}
 
+    <!-- Placeholder for header block -->
     {% block header %}
     {% endblock %}
 
+    <!-- Placeholder for content block -->
     {% block content %}
     {% endblock %}
 
+    <!-- Footer section -->
     <footer class="footer">
         <div class="text-center py-2 bg-light">
             <span class="text-dark">Copyright &copy; {{ year }}</span>

@@ -6,23 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
+    <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="static/css/bootstrap.css">
+    <!-- Custom styles -->
     <link rel="stylesheet" href="static/css/styles.css">
 
     <style>
+        /* Additional custom styles */
         .form-container {
             width: 100%;
-            max-width: 400px; 
+            max-width: 400px; /* Limiting the width */
         }
         .form-control {
-            width: 100%;
+            width: 100%; /* Make form controls full width */
         }
         .alert-box {
+            /* Styling for alert boxes */
             border: 1px solid red;
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 10px;
-            background-color: #ffe6e6; 
+            background-color: #ffe6e6; /* Red background color */
         }
         /* Adjustments for logo sizes */
         .top-logo {
@@ -39,19 +43,23 @@
 
     <div class="container d-flex flex-column align-items-center justify-content-center min-vh-100">
 
+        <!-- Top logo section -->
         <div class="d-flex align-items-center justify-content-center mb-3">
             <img src="static/image/musica_logo.png" alt="logo" class="top-logo"> <!-- Apply top-logo class -->
         </div>
 
+        <!-- Form rendering -->
         {% from 'bootstrap5/form.html' import render_form %}
 
         {% block content %}
 
         <div class="form-container text-center">
+            <!-- Page header -->
             <div class="page-header">
                 <h4>{{ heading }}</h4>
             </div>
 
+            <!-- Flash messages -->
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -64,6 +72,7 @@
 			
 
             <div class="m-auto">
+                <!-- Render the form -->
                 {{ render_form(form) }}
             </div>
 
@@ -72,16 +81,20 @@
 
         {% endblock %}
 
+        <!-- Footer section -->
         <footer class="text-center mt-4">
             <a href="index.html" class="d-flex align-items-center justify-content-center mb-3">
                 <img src="static/image/musica_logo.png" alt="logo" class="bottom-logo">
             </a>
+            <!-- Copyright notice -->
             <p>All Rights Reserved.</p>
         </footer>
 
     </div>
 
+    <!-- Link to Bootstrap JavaScript -->
     <script src="js/bootstrap.js"></script>
+    <!-- Link to jQuery -->
     <script src="js/jquery.min.js"></script>
 
 </body>
