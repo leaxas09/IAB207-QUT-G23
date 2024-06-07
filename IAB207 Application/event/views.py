@@ -13,6 +13,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 import os
 import sqlite3
+from sqlalchemy import or_
 
 main_blueprint = Blueprint('main', __name__)
 event_blueprint = Blueprint('event', __name__, url_prefix='/event')
@@ -27,7 +28,7 @@ def search():
     search_query = request.args.get('search', '')
     if search_query:
         query = f"%{search_query}%"
-        events = Event.query.filter(Event.name.ilike(query)).all()
+        events = Event.query.filter(or_( Event.name.ilike(query), Event.genre.ilike(query) )).all()
         num_results = len(events)
         if num_results == 0:
             flash('No results found.', 'warning')
@@ -104,6 +105,7 @@ def create():
         date_str = request.form.get('date')
         ticket_price = float(request.form.get('ticket_price'))
         ticket_amount = int(request.form.get('ticket_amount'))
+        genre = request.form.get('genre')
         description = request.form.get('description')
         image_file = request.files.get('image')
 
@@ -183,7 +185,16 @@ def confirm_purchase(event_id):
 
     db.session.commit()
 
-    flash('Purchase confirmed!', 'success')
+    tickets = Purchase.query\
+        .filter(Purchase.user_id == current_user.id, Purchase.event_id == event_id)\
+        .with_entities(Purchase.id)\
+        .all()
+    
+    ticketNo = ''
+    for ticket in tickets:
+        ticketNo += ' ' + str(ticket[0])
+
+    flash (f"Purchase confirmed! Ticket Number/s you have for this event is {ticketNo}", 'success')
     return redirect(url_for('event.details', event_id=event_id))
 
 @event_blueprint.route('/bookings')
@@ -192,7 +203,7 @@ def bookings():
     bookings = Purchase.query\
         .join(Event, Purchase.event_id == Event.id)\
         .filter(Purchase.user_id == current_user.id)\
-        .with_entities(Event.id, Event.description, Event.date, Event.location, Event.name, Purchase.purchase_date)\
+        .with_entities(Event.id, Event.description, Event.date, Event.location, Event.name, Purchase.purchase_date, Purchase.id, Event.image)\
         .all()
 
     if not bookings:
