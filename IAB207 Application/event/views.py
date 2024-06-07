@@ -15,14 +15,18 @@ import os
 import sqlite3
 from sqlalchemy import or_
 
+# Create a blueprint for the main routes
 main_blueprint = Blueprint('main', __name__)
+# Create a blueprint for event-related routes with a URL prefix
 event_blueprint = Blueprint('event', __name__, url_prefix='/event')
 
+# Route for the home page, displaying all events
 @main_blueprint.route('/')
 def index():
     events = Event.query.all()
     return render_template('index.html', events=events)
 
+# Route for searching events
 @main_blueprint.route('/search')
 def search():
     search_query = request.args.get('search', '')
@@ -39,6 +43,7 @@ def search():
 
     return render_template('index.html', events=events)
 
+# Route for user login
 @main_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -53,6 +58,7 @@ def login():
         return redirect(url_for('main.index'))
     return render_template('register.html', title='Sign In', form=form)
 
+# Route for user registration
 @main_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
     register_form = RegisterForm()
@@ -83,18 +89,20 @@ def register():
 
     return render_template('register.html', form=register_form, heading='Register')
 
-
+# Route for user logout
 @main_blueprint.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
 
+# Import statements for additional functionality
 from flask import flash, redirect, url_for
 from flask_login import login_required
 from werkzeug.utils import secure_filename
 import os
 from datetime import datetime
 
+# Route for creating a new event
 @event_blueprint.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
@@ -146,18 +154,16 @@ def create():
 
     return render_template('create_event.html')
 
-
-
-
+# Route for viewing event details
 @event_blueprint.route('/details/<int:event_id>', methods=['GET'])
 def details(event_id):
     event = Event.query.get_or_404(event_id)
     return render_template('event_details.html', event=event)
 
-
+# Route for event checkout
 @event_blueprint.route('/checkout/<int:event_id>', methods=['POST'])
 @login_required
-def checkout(event_id): #checkout page
+def checkout(event_id):
     event = Event.query.get_or_404(event_id)
     ticket_quantity = int(request.form.get('ticket_quantity'))
     ticket_total = ticket_quantity * event.ticket_price
@@ -166,6 +172,7 @@ def checkout(event_id): #checkout page
         return redirect(url_for('event_blueprint.details', event_id=event_id))
     return render_template('checkout.html', event=event, ticket_quantity=ticket_quantity, ticket_total=ticket_total)
 
+# Route for confirming event purchase
 @event_blueprint.route('/confirm_purchase/<int:event_id>', methods=['POST'])
 @login_required
 def confirm_purchase(event_id):
@@ -195,9 +202,10 @@ def confirm_purchase(event_id):
     for ticket in tickets:
         ticketNo += ' ' + str(ticket[0])
 
-    flash (f"Purchase confirmed! Ticket Number/s you have for this event is {ticketNo}", 'success')
+    flash(f"Purchase confirmed! Ticket Number/s you have for this event is {ticketNo}", 'success')
     return redirect(url_for('event.details', event_id=event_id))
 
+# Route for viewing user bookings
 @event_blueprint.route('/bookings')
 @login_required
 def bookings():
@@ -212,6 +220,7 @@ def bookings():
 
     return render_template('bookings.html', bookings=bookings)
 
+# Route for adding comments to an event
 @event_blueprint.route('/<int:event_id>/comment', methods=['GET', 'POST'])
 @login_required
 def comment(event_id):
@@ -223,8 +232,3 @@ def comment(event_id):
         db.session.commit()
         flash('Your comment has been added', 'success')
     return redirect(url_for('event_blueprint.details', event_id=event_id))
-
-
-
-
-
