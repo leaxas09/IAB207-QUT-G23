@@ -35,6 +35,7 @@ class Event(db.Model):
     date = db.Column(db.Date, nullable=False)
     ticket_price = db.Column(db.Float, nullable=False)
     ticket_amount = db.Column(db.Integer, nullable=False)
+    genre = db.Column(db.String(100))
     description = db.Column(db.String(500))
     image = db.Column(db.String(120), nullable=True)
     comments = db.relationship('Comment', backref='eventimage')
